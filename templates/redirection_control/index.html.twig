@@ -30,13 +30,17 @@
         }
     </style>
 
-    <div class="example-wrapper">
-        <h1>Hello {{ controller_name }}! ✅</h1>
 
-        This friendly message is coming from:
-        <form action="{{ path('app_logout') }}" method="post">
-            <button type="submit" class="btn btn-custom">Logout</button>
-        </form>
+    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="text-center">
+            <h1 style="color: #007BFF;">Bienvenue dans la page de demande de remboursement de frais</h1>
+            <h2>Vous êtes ?</h2>
+            <div class="button-container">
+                <a href="{{ path('app_login') }}" class="btn btn-primary">Employé</a>
+                <a href="{{ path('app_login') }}" class="btn btn-success">Comptable</a>
+            </div>
+        </div>
     </div>
+
 {% endblock %}
 

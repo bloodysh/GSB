@@ -8,8 +8,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RedirectionControlController extends AbstractController
 {
-    #[Route('/redirection/control', name: 'app_redirection_control')]
+    #[Route('/', name: 'app_redirection_control')]
     public function index(): Response
+
     {
         return $this->render('redirection_control/index.html.twig', [
             'controller_name' => 'RedirectionControlController',
