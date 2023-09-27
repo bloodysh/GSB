@@ -28,18 +28,24 @@
         .btn-custom:hover {
             background-color: #0056b3; /* Change button color on hover */
         }
+
+        /* Add background image to the body */
+        body {
+            background-image: url('{{ asset('img/Research.jpg') }}'); /* Replace 'your_image.jpg' with your image file name */
+            background-size: 1600px 300px; /* Set a fixed size, e.g., 400px width and 200px height */
+            background-attachment: fixed;
+            background-position: top;
+            background-repeat: no-repeat;
+        }
     </style>
 
-    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
-        <div class="text-center">
-            <h1 style="color: #007BFF;">Bienvenue dans la page de demande de remboursement de frais</h1>
-            <h2>Vous êtes ?</h2>
-            <div class="button-container">
-                <a href="{{ path('app_login') }}" class="btn btn-primary">Employé</a>
-                <a href="{{ path('app_login') }}" class="btn btn-success">Comptable</a>
-            </div>
-        </div>
+
+    <div class="navbar navbar-expand-lg navbar-light bg-light">
+        <!-- Your navigation bar here -->
+    </div>
+
+    <div class="text-center" style="margin-top: 220px;" >
+        <h1 style="color: #007BFF;">Bienvenue chez GSB</h1>
     </div>
 
 {% endblock %}
-

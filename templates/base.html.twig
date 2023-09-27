@@ -12,13 +12,22 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand d-flex align-items-center" href="#">
         <img src="{{ asset('img/logo.jpg') }}" width="90" height="60" class="d-inline-block align-top" alt="Logo">
-        GSB Frais
+
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Acceuil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/produits">Nos produits</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/rejoindre">Nous Rejoindre</a>
+            </li>
             <li class="nav-item">
                 {% if not(is_granted('IS_AUTHENTICATED')) %}
                 <a class="nav-link" href="{{ path('app_login') }}">Login</a>
