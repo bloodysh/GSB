@@ -22,7 +22,7 @@ class FicheFrais
     #[ORM\Column]
     private ?int $nbJustificatifs = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
     private ?string $montantValid = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
