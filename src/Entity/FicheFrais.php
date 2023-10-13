@@ -145,11 +145,10 @@ class FicheFrais
 
     public function removeLigneFraisForfait(LigneFraisForfait $ligneFraisForfait): static
     {
-        if ($this->ligneFraisForfait->removeElement($ligneFraisForfait)) {
+        if ($this->ligneFraisForfait->removeElement($ligneFraisForfait) && $ligneFraisForfait->getFicheFrais()===$this)
+        {
             // set the owning side to null (unless already changed)
-            if ($ligneFraisForfait->getFicheFrais() === $this) {
                 $ligneFraisForfait->setFicheFrais(null);
-            }
         }
 
         return $this;
