@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Etat;
 use App\Entity\FicheFrais;
+use App\Entity\FraisForfait;
+use App\Entity\LigneFraisForfait;
+use App\Entity\LigneFraisHorsForfait;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
@@ -86,6 +89,9 @@ class DataImportController extends AbstractController
                     case "VA":
                         $etat = $entityManager->getRepository(Etat::class)->find(4);
                         break;
+                    default:
+                        error();
+                        break;
                 }
 
                 $fiche->setEtat($etat);
@@ -106,4 +112,92 @@ class DataImportController extends AbstractController
         ]);
 
     }
+
+    #[Route('/ligne/hors/forfait', name: 'app_data_import_lignes_hors')]
+    public function lignesHorsForfait(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+        // Decode des fiches frais
+        $lignesHorsForfaitjson = file_get_contents('./lignefraishorsforfait.json');
+        $lignesHors = json_decode($lignesHorsForfaitjson, true);
+
+
+        foreach ($lignesHors as $ligneHorsData) {
+            $ligneHors = new LigneFraisHorsForfait();
+            $user = $entityManager->getRepository(User::class)->findOneBy(['oldId' => $ligneHorsData['idVisiteur']]);
+
+
+            $fiche2= $entityManager->getRepository(FicheFrais::class)->findOneBy([
+                'user' => $user,
+                'mois' => $ligneHorsData['mois'],
+            ]);
+
+            if ($ligneHors) {
+                $ligneHorsForfait = new LigneFraisHorsForfait();
+                $ligneHorsForfait->setFicheFrais($fiche2);
+                $ligneHorsForfait->setLibelle($ligneHorsData['libelle']);
+                $date = new \DateTime($ligneHorsData['date']);
+                $ligneHorsForfait->setDate($date);
+                $ligneHorsForfait->setMontant($ligneHorsData['montant']);
+                $entityManager->persist($ligneHorsForfait);
+            } else {
+                // Handle the case where no matching entity is found for the criteria.
+            }
+        }
+
+        $entityManager->flush();
+
+        return $this->render('data_import/index.html.twig', [
+            'controller_name' => 'DataImportController',
+        ]);
+    }
+
+    #[Route('/ligne/forfait', name: 'app_data_import_lignes_')]
+    public function lignesForfait(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+        // Decode des fiches frais
+        $lignesForfaitjson = file_get_contents('./lignefraisforfait.json');
+        $lignes = json_decode($lignesForfaitjson, true);
+
+
+        foreach ($lignes as $ligneData) {
+            $ligneForfait = new LigneFraisForfait();
+            $user = $entityManager->getRepository(User::class)->findOneBy(['oldId' => $ligneData['idVisiteur']]);
+            $fiche2 = $entityManager->getRepository(FicheFrais::class)->findOneBy([
+                'user' => $user,
+                'mois' => $ligneData['mois'],
+            ]);
+
+
+            $ligneForfait->setQuantite($ligneData['quantite']);
+            $ligneForfait->setFicheFrais($fiche2);
+
+            switch($ligneData['idFraisForfait']){
+                case "ETP":
+                    $ff= $entityManager->getRepository(FraisForfait::class)->find(1);
+                    break;
+                case "KM":
+                    $ff= $entityManager->getRepository(FraisForfait::class)->find(2);
+                    break;
+                case "NUI":
+                    $ff= $entityManager->getRepository(FraisForfait::class)->find(3);
+                    break;
+                case "REP":
+                    $ff= $entityManager->getRepository(FraisForfait::class)->find(4);
+                    break;
+                default:
+                    error();
+                    break;
+            }
+            $ligneForfait->setFraisForfait($ff);
+            $entityManager->persist($ligneForfait);
+        }
+
+        $entityManager->flush();
+
+        return $this->render('data_import/index.html.twig', [
+            'controller_name' => 'DataImportController',
+        ]);
+    }
+
+
 }
