@@ -50,7 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateEmbauche = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: FicheFrais::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: FicheFrais::class, orphanRemoval: true, fetch: 'EAGER')]
     private Collection $ficheFrais;
 
     #[ORM\Column(length: 255)]
