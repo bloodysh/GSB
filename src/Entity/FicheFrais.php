@@ -48,6 +48,17 @@ class FicheFrais
         $this->ligneFraisHorsForfait = new ArrayCollection();
     }
 
+    public function cumul()
+    {
+
+        foreach ($this->ligneFraisHorsForfait as $ligne)
+        {
+            $ligne->getMontant();
+            $tot = $tot + $ligne;
+        }
+        return $this->cumul();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -58,6 +69,10 @@ class FicheFrais
         return $this->mois;
     }
 
+    public function getMoisFormatted(): ?\DateTimeImmutable
+    {
+        return \DateTimeImmutable::createFromFormat('Ym', $this->mois);
+    }
     public function setMois(string $mois): static
     {
         $this->mois = $mois;

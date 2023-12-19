@@ -36,7 +36,7 @@ class DataImportController extends AbstractController
             $user->setVille($userData['ville']);
             $user->setNom($userData['nom']);
             $user->setPrenom($userData['prenom']);
-            $user->setEmail($userData['login']);
+            $user->setEmail($userData['login' ]. '@gsb.fr');
 
             // Hash the password using UserPasswordHasherInterface
             $hashedPassword = $userPasswordHasher->hashPassword(
@@ -49,11 +49,12 @@ class DataImportController extends AbstractController
             $user->setCp($userData['cp']);
             $dateEmbauche = new \DateTime($userData['dateEmbauche']);
             $user->setDateEmbauche($dateEmbauche);
+            $entityManager->persist($user);
+            $entityManager->flush();
 
         }
 
-        $entityManager->persist($user);
-        $entityManager->flush();
+
 
         return $this->render('data_import/index.html.twig', [
             'controller_name' => 'DataImportController',
