@@ -36,8 +36,9 @@ class AfficherFichesController extends AbstractController
             $selectedFiche = $form->get('fichesFrais')->getData();
 
             $lignefraisforfait = $form->get('fichesFrais')->getData();
+            $tot = $selectedFiche->getCumul();
+            $totalLigneFraisForfait = $selectedFiche->cumulLigneForfait();
         }
-
 
 
 
