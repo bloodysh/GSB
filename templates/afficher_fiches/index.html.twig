@@ -60,6 +60,25 @@
                 </tr>
             {% endfor %}
         </table>
+        <h4>Montant des frais hors forfait total</h4>
+        <tr>
+            <th>Montant Tot:</th>
+        </tr>
+        <tr>
+            <th>
+                {{ selectedFiche.cumul }}
+            </th>
+        </tr>
+
+        <h4>Montant des frais forfait total</h4>
+        <tr>
+            <th>Montant Tot:</th>
+        </tr>
+        <tr>
+            <th>
+                {{ selectedFiche.cumulLigneForfait }}
+            </th>
+        </tr>
     {% endif %}
 
 

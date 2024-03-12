@@ -48,15 +48,28 @@ class FicheFrais
         $this->ligneFraisHorsForfait = new ArrayCollection();
     }
 
-    public function cumul()
+    public function getCumul(): float
     {
+        $tot = 0;
 
-        foreach ($this->ligneFraisHorsForfait as $ligne)
-        {
-            $ligne->getMontant();
-            $tot = $tot + $ligne;
+        foreach ($this->ligneFraisHorsForfait as $ligne) {
+            // Assuming that getMontant returns a float value
+            $tot += $ligne->getMontant();
         }
-        return $this->cumul();
+
+        return $tot;
+    }
+
+    public function cumulLigneForfait()
+    {
+        $tot = 0;
+
+        foreach ($this->ligneFraisForfait as $ligne) {
+            // Assuming that getMontant returns a float value
+            $tot += $ligne->getQuantite() * $ligne->getFraisForfait()->getMontant();
+        }
+
+        return $tot;
     }
 
     public function getId(): ?int

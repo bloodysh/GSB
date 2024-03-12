@@ -1,0 +1,16 @@
+{# templates/inflation/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Inflation{% endblock %}
+
+{% block body %}
+    <h1>{{ controller_name }}</h1>
+
+    {# Afficher les données de la fiche ici #}
+    <p>Montant valide total : {{ montantValideTotal }}</p>
+    <p>Montant valide par visiteur : {{ montValideParVisiteur }}</p>
+    <p>Prime : {{ prime }}</p>
+
+    {# Vous pouvez ajouter d'autres éléments de l'interface utilisateur ici #}
+{% endblock %}
