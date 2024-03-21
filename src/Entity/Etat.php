@@ -63,13 +63,10 @@ class Etat
 
     public function removeFicheFrai(FicheFrais $ficheFrai): static
     {
-        if ($this->ficheFrais->removeElement($ficheFrai)) {
+        if ($this->ficheFrais->removeElement($ficheFrai)&&$ficheFrai->getEtat() === $this) {
             // set the owning side to null (unless already changed)
-            if ($ficheFrai->getEtat() === $this) {
-                $ficheFrai->setEtat(null);
-            }
+            $ficheFrai->setEtat(null);
         }
-
         return $this;
     }
 }

@@ -52,7 +52,6 @@ class RegistrationFormType extends AbstractType
             ->add('dateEmbauche', DateTimeType::class, [
                 'data' => new \DateTime(), // Set the default value to the current date and time
             ]);
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

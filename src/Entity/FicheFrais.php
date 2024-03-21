@@ -22,7 +22,7 @@ class FicheFrais
     #[ORM\Column]
     private ?int $nbJustificatifs = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
     private ?string $montantValid = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -48,6 +48,30 @@ class FicheFrais
         $this->ligneFraisHorsForfait = new ArrayCollection();
     }
 
+    public function getCumul(): float
+    {
+        $tot = 0;
+
+        foreach ($this->ligneFraisHorsForfait as $ligne) {
+            // Assuming that getMontant returns a float value
+            $tot += $ligne->getMontant();
+        }
+
+        return $tot;
+    }
+
+    public function cumulLigneForfait()
+    {
+        $tot = 0;
+
+        foreach ($this->ligneFraisForfait as $ligne) {
+            // Assuming that getMontant returns a float value
+            $tot += $ligne->getQuantite() * $ligne->getFraisForfait()->getMontant();
+        }
+
+        return $tot;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -58,6 +82,10 @@ class FicheFrais
         return $this->mois;
     }
 
+    public function getMoisFormatted(): ?\DateTimeImmutable
+    {
+        return \DateTimeImmutable::createFromFormat('Ym', $this->mois);
+    }
     public function setMois(string $mois): static
     {
         $this->mois = $mois;
@@ -145,11 +173,10 @@ class FicheFrais
 
     public function removeLigneFraisForfait(LigneFraisForfait $ligneFraisForfait): static
     {
-        if ($this->ligneFraisForfait->removeElement($ligneFraisForfait)) {
+        if ($this->ligneFraisForfait->removeElement($ligneFraisForfait) && $ligneFraisForfait->getFicheFrais()===$this)
+        {
             // set the owning side to null (unless already changed)
-            if ($ligneFraisForfait->getFicheFrais() === $this) {
                 $ligneFraisForfait->setFicheFrais(null);
-            }
         }
 
         return $this;
