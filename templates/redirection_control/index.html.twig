@@ -30,22 +30,71 @@
         }
 
         /* Add background image to the body */
-        body {
-            background-image: url('{{ asset('img/Research.jpg') }}'); /* Replace 'your_image.jpg' with your image file name */
-            background-size: 1600px 300px; /* Set a fixed size, e.g., 400px width and 200px height */
-            background-attachment: fixed;
-            background-position: top;
-            background-repeat: no-repeat;
+
+
+        /* Customize carousel size */
+        .carousel {
+            max-width: 400px; /* Set maximum width */
+            margin: 0 auto; /* Center the carousel horizontally */
+        }
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            height: 50px;  /* Adjust this value as needed */
+            width: 50px;  /* Adjust this value as needed */
+        }
+        /* Add custom styles for the product display */
+        .product-display {
+            display: flex; /* Use flexbox layout */
+            align-items: center; /* Center items vertically */
+            margin-bottom: 20px; /* Add some margin between products */
+        }
+
+        .product-display img {
+            width: 200px;  /* Adjust this value as needed */
+            margin-right: 20px;
+        }
+
+        /* Increase the size of the product descriptions */
+        .product-display p {
+            font-size: 20px; /* Adjust this value as needed */
+        }
+
+        /* Arrange product displays in a row */
+        .container.text-center {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .container.text-center {
+            display: flex;
+            flex-direction: row;  /* Add this line */
+            justify-content: space-around;  /* Add this line to add space around the items */
+            flex-wrap: wrap;  /* Add this line to allow the items to wrap onto the next line if there isn't enough space */
         }
     </style>
-
 
     <div class="navbar navbar-expand-lg navbar-light bg-light">
         <!-- Your navigation bar here -->
     </div>
 
-    <div class="text-center" style="margin-top: 220px;" >
+    <div class="text-center" style="margin-top: 100px;">
         <h1 style="color: #007BFF;">Bienvenue chez GSB</h1>
+    </div>
+
+    <div class="container text-center mt-5">
+        <div class="product-display">
+            <img src="{{ asset('img/doliprane1.png') }}" alt="Product 1">
+            <p>Une solution rapide et efficace pour soulager la douleur.</p>
+        </div>
+        <div class="product-display">
+            <img src="{{ asset('img/medicament2.jpg') }}" alt="Product 2">
+            <p>Idéal pour traiter les symptômes courants.</p>
+        </div>
+        <div class="product-display">
+            <img src="{{ asset('img/medicament3.jpg') }}" alt="Product 3">
+            <p>Fabriqué avec des ingrédients naturels pour une solution douce et sûre.</p>
+        </div>
     </div>
 
 {% endblock %}
