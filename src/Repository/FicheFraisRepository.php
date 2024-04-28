@@ -21,6 +21,16 @@ class FicheFraisRepository extends ServiceEntityRepository
         parent::__construct($registry, FicheFrais::class);
     }
 
+    public function findByYear($year): ?array
+    {
+        return $this->createQueryBuilder('ff')
+            ->where('ff.mois LIKE :valYear')
+            ->setParameter('valYear', $year.'%')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 //    /**
 //     * @return FicheFrais[] Returns an array of FicheFrais objects
 //     */

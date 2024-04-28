@@ -3,89 +3,149 @@
 {% block title %}Fiches{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
 
-<div class="example-wrapper">
-    <h1>Afficher une fiche✅</h1>
+        .container {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+            font: 18px/1.5 sans-serif;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
 
-    {{ form_start(form) }}
-    {{ form_row(form.fichesFrais) }}
-    {{ form_end(form) }}
+        h1 {
+            text-align: center;
+            color: #333;
+        }
 
-    {% if selectedFiche is not null %}
-        <table border="1">
-            <tr>
-                <th>Mois</th>
-                <th>NbJustificatifs</th>
-                <th>MontantValid</th>
-                <th>DateModif</th>
-                <th>État ID</th>
-            </tr>
-            <tr>
-                <td>{{ selectedFiche.moisFormatted | date('m-Y') }}</td>
-                <td>{{ selectedFiche.nbJustificatifs }}</td>
-                <td>{{ selectedFiche.montantValid }}</td>
-                <td>{{ selectedFiche.dateModif | date('Y-m-d H:i:s') }}</td>
-                <td>{{ selectedFiche.etat.libelle }}</td>
-            </tr>
-        </table>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
 
-        <h3>Frais Forfait:</h3>
-        <table border="1">
-            <tr>
-                <th>Quantité</th>
-                <th>Libelle</th>
-            </tr>
-            {% for ligne in selectedFiche.ligneFraisForfait %}
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            text-align: right;
+        }
+
+        .total th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+    </style>
+
+    <div class="container">
+        <h1>Afficher une fiche✅</h1>
+
+        {{ form_start(form) }}
+        {{ form_row(form.fichesFrais) }}
+        {{ form_end(form) }}
+
+        {% if selectedFiche is not null %}
+            <table>
+                <thead>
                 <tr>
-                    <td>{{ ligne.quantite }}</td>
-                    <td>{{ ligne.fraisforfait.libelle }}</td>
+                    <th>Mois</th>
+                    <th>NbJustificatifs</th>
+                    <th>MontantValid</th>
+                    <th>DateModif</th>
+                    <th>État ID</th>
                 </tr>
-            {% endfor %}
-        </table>
-
-        <h3>Frais Hors Forfait:</h3>
-        <table border="1">
-            <tr>
-                <th>Libelle</th>
-                <th>Montant</th>
-            </tr>
-            {% for ligneHors in selectedFiche.ligneFraisHorsForfait %}
+                </thead>
+                <tbody>
                 <tr>
-                    <td>{{ ligneHors.libelle }}</td>
-                    <td>{{ ligneHors.montant }} €</td>
+                    <td>{{ selectedFiche.moisFormatted | date('m-Y') }}</td>
+                    <td>{{ selectedFiche.nbJustificatifs }}</td>
+                    <td>{{ selectedFiche.montantValid }}</td>
+                    <td>{{ selectedFiche.dateModif | date('Y-m-d H:i:s') }}</td>
+                    <td>{{ selectedFiche.etat.libelle }}</td>
                 </tr>
-            {% endfor %}
-        </table>
-        <h4>Montant des frais hors forfait total</h4>
-        <tr>
-            <th>Montant Tot:</th>
-        </tr>
-        <tr>
-            <th>
-                {{ selectedFiche.cumul }}
-            </th>
-        </tr>
+                </tbody>
+            </table>
 
-        <h4>Montant des frais forfait total</h4>
-        <tr>
-            <th>Montant Tot:</th>
-        </tr>
-        <tr>
-            <th>
-                {{ selectedFiche.cumulLigneForfait }}
-            </th>
-        </tr>
-    {% endif %}
+            <h3>Frais Forfait:</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>Quantité</th>
+                    <th>Libelle</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ligne in selectedFiche.ligneFraisForfait %}
+                    <tr>
+                        <td>{{ ligne.quantite }}</td>
+                        <td>{{ ligne.fraisforfait.libelle }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
 
+            <h3>Frais Hors Forfait:</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>Libelle</th>
+                    <th>Montant</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ligneHors in selectedFiche.ligneFraisHorsForfait %}
+                    <tr>
+                        <td>{{ ligneHors.libelle }}</td>
+                        <td>{{ ligneHors.montant }} €</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <h4>Montant des frais hors forfait total</h4>
+            <table class="total">
+                <tbody>
+                <tr>
+                    <th>Montant Tot:</th>
+                    <td>{{ selectedFiche.cumul }}</td>
+                </tr>
+                </tbody>
+            </table>
 
-
-
-
-
-
-</div>
+            <h4>Montant des frais forfait total</h4>
+            <table class="total">
+                <tbody>
+                <tr>
+                    <th>Montant Tot:</th>
+                    <td>{{ selectedFiche.cumulLigneForfait }}</td>
+                </tr>
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
 {% endblock %}

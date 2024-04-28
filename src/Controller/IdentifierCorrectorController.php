@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
+##controller pour transformer les logins en login mails @gsb
 class IdentifierCorrectorController extends AbstractController
 {
     #[Route('/identifier/corrector', name: 'app_identifier_corrector')]

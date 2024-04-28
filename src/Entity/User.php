@@ -247,4 +247,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getFicheFraisByMonth($month): ?FicheFrais
+    {
+        foreach ($this->ficheFrais as $ficheFrais) {
+            if ($ficheFrais->getMois() == $month) {
+                return $ficheFrais;
+            }
+        }
+        return null;
+    }
+
 }

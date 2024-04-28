@@ -73,4 +73,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ;
     }
 
+    public function findFicheFraisByMonth($userId, $month): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->join('u.ficheFrais', 'f')
+            ->where('u.id = :userId')
+            ->andWhere('f.mois = :month')
+            ->setParameter('userId', $userId)
+            ->setParameter('month', $month)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
 }

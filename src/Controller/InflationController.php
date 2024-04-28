@@ -29,17 +29,13 @@ class InflationController extends AbstractController
             foreach ($fiches as $fiche)
             {
                 if (str_starts_with($fiche->getMois(), '2023'))
-                $montantValideTotal += $fiche->getMontantValid();
-                $montValideParVisiteur = $montantValideTotal/$i;
+                $montantValideTotal += round($fiche->getMontantValid());
+                $montValideParVisiteur = round($montantValideTotal/$i);
 
             }
-            $prime = $montValideParVisiteur * (9.5 /100);
+            $prime = round($montValideParVisiteur * (9.5 /100), 2);
         }
 
-
-
-        var_dump($montValideParVisiteur);
-        var_dump($montantValideTotal);
         return $this->render('inflation/index.html.twig', [
             'controller_name' => 'InflationController',
             'montantValideTotal' => $montantValideTotal,
