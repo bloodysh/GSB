@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ComptableController!{% endblock %}
+
+{% block body %}
+
+    {{ form(fichesFraisForm) }}
+
+    <table class="table table-bordered">
+        <thead class="table">
+        <tr>
+            <th>Mois</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for fiche in fichesFrais %}
+            <tr>
+                {% set monthNum = fiche.mois|slice(-2) %}
+                {% set monthName = ("2000-" ~ monthNum ~ "-01")|date('F') %}
+
+                <td>{{ monthName }}</td>
+                <td>{{ fiche.etat.libelle }}</td>
+                <td>
+                    <a href="{{ path('app_fiche_edit_comptable', {'id': fiche.id}) }}" class="btn btn-primary">Edit</a>
+                </td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
