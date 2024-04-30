@@ -149,8 +149,17 @@ class SaisirFicheFraisController extends AbstractController
         return $this->render('saisir_fiche_frais/index.html.twig', [
             'formFraisForfait' => $formForfait ? $formForfait->createView() : null,
             'formHorsForfait' => $formHorsForfait ? $formHorsForfait->createView() : null,
-            'ficheFrais' => $ficheFrais,
             'fraisHorsForfaitAffichage' => $affichageLigneFHF
         ]);
+
+
+    }
+    public function delete(Request $request, LigneFraisHorsForfait $fraisHorsForfait): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($fraisHorsForfait);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_saisir_fiche_frais');
     }
 }

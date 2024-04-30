@@ -22,12 +22,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/">Acceuil</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/produits">Nos produits</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/rejoindre">Nous Rejoindre</a>
-            </li>
+
             <li class="nav-item">
                 {% if not(is_granted('IS_AUTHENTICATED')) %}
                 <a class="nav-link" href="{{ path('app_login') }}">Login</a>
@@ -35,6 +30,12 @@
             </li>
             <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_afficher_fiches') }}">Fiches</a>
+            </li>
+            <li class="nav-item">
+                <a class=" nav-link" href="{{ path('app_comptable') }}">Comptable</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_saisir_fiche_frais') }}">Saisir Fiche</a>
             </li>
         </ul>
     </div>

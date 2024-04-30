@@ -10,17 +10,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SupprimFHFController extends AbstractController
 {
-    #[Route('/supprim/f/h/f', name: 'app_supprim_f_h_f')]
+    #[Route('/delete/fiche/hors/forfait/{id}', name: 'app_delete_fiche_hors_forfait')]
     public function index($id, EntityManagerInterface $entityManager): Response
     {
-        $ficheFHF = $entityManager->getRepository(LigneFraisHorsForfait::class)->find($id);
+        $ficheHorForfait = $entityManager->getRepository(LigneFraisHorsForfait::class)->find($id);
 
-        if ($ficheFHF != null){
-            $entityManager->remove($ficheFHF);
+        if($ficheHorForfait != null){
+            $entityManager->remove($ficheHorForfait);
             $entityManager->flush();
         }
         return $this->render('supprim_fhf/index.html.twig', [
-            'controller_name' => 'SupprimFHFController',
         ]);
     }
 }

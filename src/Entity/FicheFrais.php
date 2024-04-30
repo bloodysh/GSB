@@ -65,8 +65,11 @@ class FicheFrais
         $tot = 0;
 
         foreach ($this->ligneFraisForfait as $ligne) {
-            // Assuming that getMontant returns a float value
-            $tot += $ligne->getQuantite() * $ligne->getFraisForfait()->getMontant();
+            // Check if the FraisForfait object exists
+            if ($ligne->getFraisForfait() !== null) {
+                // Assuming that getMontant returns a float value
+                $tot += $ligne->getQuantite() * $ligne->getFraisForfait()->getMontant();
+            }
         }
 
         return $tot;

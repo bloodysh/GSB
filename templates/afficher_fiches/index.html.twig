@@ -102,10 +102,12 @@
                 </thead>
                 <tbody>
                 {% for ligne in selectedFiche.ligneFraisForfait %}
-                    <tr>
-                        <td>{{ ligne.quantite }}</td>
-                        <td>{{ ligne.fraisforfait.libelle }}</td>
-                    </tr>
+                    {% if ligne.fraisforfait is not null %}
+                        <tr>
+                            <td>{{ ligne.quantite }}</td>
+                            <td>{{ ligne.fraisforfait.libelle }}</td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
                 </tbody>
             </table>
