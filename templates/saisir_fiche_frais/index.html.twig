@@ -42,7 +42,7 @@
                                 <td>{{ frais.getLibelle() }}</td>
                                 <td>{{ frais.getMontant() }}</td>
                                 <td>
-                                    <form methode="post" action="{{ path('supprimer_frais', {'id': frais.getId()}) }}">
+                                    <form methode="post" action="{{ path('app_supprim_f_h_f', {'id': frais.getId()}) }}">
                                         <button type="submit" class="btn btn-danger">Supprimer</button>
                                 </td>
                             </tr>
