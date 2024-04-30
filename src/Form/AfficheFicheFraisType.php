@@ -18,12 +18,17 @@ class AfficheFicheFraisType extends AbstractType
                 'choices'=>$options['data'],
                 'choice_label'=>function ($choice): string {
                     $aString = $choice->getMois();
-                    $laDate = str_split($aString, 4);
-                    $theActualDate = $laDate[0] . "/" . $laDate[1];
-                    return $theActualDate;
+                    if (strlen($aString) >= 4) {
+                        $laDate = str_split($aString, 4);
+                        $theActualDate = $laDate[0] . "/" . $laDate[1];
+                        return $theActualDate;
+                    } else {
+                        // Handle the case where $aString is less than 4 characters long
+                        // You might want to return a default value or throw an exception
+                        return $aString;
+                    }
                 }
-                ])
-
+            ])
             ->add('submit', SubmitType::class, [
                 'label'=>'Submit'
             ])

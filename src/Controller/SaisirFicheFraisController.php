@@ -27,10 +27,8 @@ class SaisirFicheFraisController extends AbstractController
         $user = $this->getUser();
         $ficheFrais = $entityManager->getRepository(FicheFrais::class)->findOneBy(['user' => $user, 'mois' => date('m')]);
 
-        $dateNow = date('m');
-        $formHorsForfait = null;
-        $formHorsForfait = $this->createForm(LigneFraisHorsForfaitType::class);
-        $formForfait = null;
+        $dateNow = date('Ym');
+
         if ($ficheFrais == null) {
 
             $ficheFrais = new FicheFrais();
@@ -78,71 +76,81 @@ class SaisirFicheFraisController extends AbstractController
             $ficheFrais->addLigneFraisForfait($ligneFraisForfaitNuitee);
             $ficheFrais->addLigneFraisForfait($ligneFraisForfaitRepas);
 
-            $ligneFraisHorsForfait = new LigneFraisHorsForfait();
-            $ligneFraisHorsForfait->setFicheFrais($ficheFrais);
-            $ligneFraisHorsForfait->setDate(new \DateTime('now'));
-            $ligneFraisHorsForfait->setLibelle('test');
-
-            $ficheFrais->addLigneFraisHorsForfait($ligneFraisHorsForfait);
-
             $entityManager->persist($ficheFrais);
             $entityManager->flush();
-
-            foreach ($ficheFrais->getLigneFraisForfait() as $ligneFraisForfait) {
-                $fraisForfait = $ligneFraisForfait->getFraisForfait();
-                if ($fraisForfait !== null) {
-                    $id = $fraisForfait->getId();
-                    if ($id == 1) {
-                        $ligneFraisForfaitEtape = $ligneFraisForfait;
-                    }
-                    if ($id == 2) {
-                        $ligneFraisForfaitKm = $ligneFraisForfait;
-                    }
-                    if ($id == 3) {
-                        $ligneFraisForfaitNuitee = $ligneFraisForfait;
-                    }
-                    if ($id == 4) {
-                        $ligneFraisForfaitRepas = $ligneFraisForfait;
-                    }
-                }
-                $formForfait = $this->createForm(LigneFraisForfaitType::class);
-
-
-                // Handle form submissions
-                $formForfait->handleRequest($request);
-                if ($formForfait->isSubmitted() && $formForfait->isValid()) {
-                    $ligneFraisForfaitEtape->setQuantite($formForfait->get('quantiteEtape')->getData());
-                    $ligneFraisForfaitKm->setQuantite($formForfait->get('quantiteKm')->getData());
-                    $ligneFraisForfaitNuitee->setQuantite($formForfait->get('quantiteNuitee')->getData());
-                    $ligneFraisForfaitRepas->setQuantite($formForfait->get('quantiteRepas')->getData());
-                    $entityManager->persist($ligneFraisForfaitEtape);
-                    $entityManager->persist($ligneFraisForfaitKm);
-                    $entityManager->persist($ligneFraisForfaitNuitee);
-                    $entityManager->persist($ligneFraisForfaitRepas);
-                    $entityManager->flush();
-
-                    return $this->redirectToRoute('app_saisir_fiche_frais');
-                }
-
-                $entityManager->persist($ligneFraisForfait);
-                $entityManager->flush();
-            }
-
-
-
-
-
-        } else {
-            $formForfait = $this->createForm(LigneFraisForfaitType::class);
         }
 
+        foreach ($ficheFrais->getLigneFraisForfait() as $ligneFraisForfait) {
+            $fraisForfait = $ligneFraisForfait->getFraisForfait();
+            if ($fraisForfait !== null) {
+                $id = $fraisForfait->getId();
+                if ($id == 1) {
+                    $ligneFraisForfaitEtape = $ligneFraisForfait;
+                }
+                if ($id == 2) {
+                    $ligneFraisForfaitKm = $ligneFraisForfait;
+                }
+                if ($id == 3) {
+                    $ligneFraisForfaitNuitee = $ligneFraisForfait;
+                }
+                if ($id == 4) {
+                    $ligneFraisForfaitRepas = $ligneFraisForfait;
+                }
+            }
+        }
+
+        $formForfait = $this->createForm(LigneFraisForfaitType::class);
+
+        // Handle form submissions
+        $formForfait->handleRequest($request);
+
+        if ($formForfait->isSubmitted() && $formForfait->isValid()) {
+            // Get the data from the form
+            $data = $formForfait->getData();
+
+            // Set the data to the LigneFraisForfait entities
+            $ligneFraisForfaitEtape->setQuantite($data['ForfaitEtape']);
+            $ligneFraisForfaitKm->setQuantite($data['FraisKilometrique']);
+            $ligneFraisForfaitNuitee->setQuantite($data['NuiteeHotel']);
+            $ligneFraisForfaitRepas->setQuantite($data['RepasRestaurant']);
+
+            // Persist the entities
+            $entityManager->persist($ligneFraisForfaitEtape);
+            $entityManager->persist($ligneFraisForfaitKm);
+            $entityManager->persist($ligneFraisForfaitNuitee);
+            $entityManager->persist($ligneFraisForfaitRepas);
+
+            // Flush the changes
+            $entityManager->flush();
+
+        }
+        else {
+            $formForfait->get('ForfaitEtape')->setData($ligneFraisForfaitEtape->getQuantite());
+            $formForfait->get('FraisKilometrique')->setData($ligneFraisForfaitKm->getQuantite());
+            $formForfait->get('NuiteeHotel')->setData($ligneFraisForfaitNuitee->getQuantite());
+            $formForfait->get('RepasRestaurant')->setData($ligneFraisForfaitRepas->getQuantite());
+        }
+        $lfhf = new LigneFraisHorsForfait();
+        $formHorsForfait = $this->createForm(LigneFraisHorsForfaitType::class, $lfhf);
 
 
+// Handle form submissions
+        $formHorsForfait->handleRequest($request);
+
+        if ($formHorsForfait->isSubmitted() && $formHorsForfait->isValid()) {
+            // Get the data from the form
+
+            $lfhf->setFicheFrais($ficheFrais);
+            $entityManager->persist($lfhf);
+            $entityManager->flush();
+        }
+        $affichageLigneFHF = $entityManager->getRepository(LigneFraisHorsForfait::class)->findBy(['ficheFrais' => $ficheFrais]);
 
         return $this->render('saisir_fiche_frais/index.html.twig', [
-            'controller_name' => 'SaisirFicheFraisController',
             'formFraisForfait' => $formForfait ? $formForfait->createView() : null,
-            'formHorsForfait' => $formHorsForfait ? $formHorsForfait->createView() : null
+            'formHorsForfait' => $formHorsForfait ? $formHorsForfait->createView() : null,
+            'ficheFrais' => $ficheFrais,
+            'fraisHorsForfaitAffichage' => $affichageLigneFHF
         ]);
     }
 }
